@@ -14,10 +14,16 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>JSP</h1>
-	
-	<c:set var="data" scope="page" value="${500*6}" />
-	<c:out value="${data}" />
+
+	<form action="LoginServlet" method="post">
+		Login:
+		<input type="text" id="login" name="login">
+		<br>
+		Senha:
+		<input type="text" id="senha" name="senha">
+		<br>
+		<input type="submit" value="Entrar"> 
+	</form>
 	
 	
 	
