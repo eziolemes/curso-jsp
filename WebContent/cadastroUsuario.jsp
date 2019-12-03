@@ -13,7 +13,7 @@
 		<h1>Cadastro de usuários</h1>
 	</center>
 
-	<form action="salvarUsuario" method="post">
+	<form action="salvarUsuario" method="post" id="formUser">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -33,8 +33,16 @@
 							value="${user.senha}" class="field-long"></td>
 					</tr>
 					<tr>
+						<td>Nome:</td>
+						<td><input type="text" id="nome" name="nome"
+							value="${user.nome}" class="field-long"></td>
+					</tr>
+					<tr>
 						<td></td>
-						<td><input type="submit" value="Salvar"></td>
+						<td>
+							<input type="submit" value="Salvar">
+							<input type="submit" value="Cancelar" onclick="documento.getElementById('formUser').action = 'salvarUsuario?acao=reset'">
+						</td>
 					</tr>
 				</table>
 
@@ -44,14 +52,21 @@
 
 	<div class="container">
 		<table class="responsive-table">
-		<caption>Usuários cadastrados</caption>
+			<caption>Usuários cadastrados</caption>
+			<tr>
+				<th>Id</th>
+				<th>Login</th>
+				<th>Nome</th>
+				<th>Apagar</th>
+				<th>Editar</th>
+			</tr>
 			<c:forEach items="${usuarios}" var="user">
 				<tr>
 					<td style="width: 150px"><c:out value="${user.id}"></c:out></td>
 					<td style="width: 150px"><c:out value="${user.login}"></c:out></td>
-					<td><c:out value="${user.senha}"></c:out></td>
-					<td><a href="salvarUsuario?acao=delete&user=${user.login}">Excluir</a></td>
-					<td><a href="salvarUsuario?acao=editar&user=${user.login}">Editar</a></td>
+					<td><c:out value="${user.nome}"></c:out></td>
+					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/excluir.png" alt="excluir" title="Excluir" width="20px" height="20px"></a></td>
+					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="editar" title="Editar" width="20px" height="20px"></a></td>
 				</tr>
 			</c:forEach>
 		</table>

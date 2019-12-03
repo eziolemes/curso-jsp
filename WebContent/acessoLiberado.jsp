@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="utf-8">
 <title>Insert title here</title>
 </head>
 <body>
 	<h3>Acesso liberado ao sistema</h3>
 	
-	<a href="cadastroUsuario.jsp">Cadastro de Usuários</a>
+	<a href="salvarUsuario?acao=listartodos">Cadastro de Usuários</a>
 </body>
 </html>

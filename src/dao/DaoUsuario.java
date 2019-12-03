@@ -18,13 +18,14 @@ public class DaoUsuario {
 		connection = SingleConnection.getConnection();
 	}
 
-	public void  salvar(BeanCursoJsp usuario) {
+	public void salvar(BeanCursoJsp usuario) {
 		try {
-			String sql = "insert into usuario(login, senha) values (?,?)";
+			String sql = "insert into usuario(login, senha, nome) values (?,?,?)";
 
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
 			insert.setString(2, usuario.getSenha());
+			insert.setString(3, usuario.getNome());
 			insert.execute();
 			connection.commit();
 		}catch (Exception e) {
@@ -47,6 +48,7 @@ public class DaoUsuario {
 			usuario.setId(rs.getLong("id"));
 			usuario.setLogin(rs.getString("login"));
 			usuario.setSenha(rs.getString("senha"));
+			usuario.setNome(rs.getString("nome"));
 
 			lista.add(usuario);
 		}
@@ -54,12 +56,12 @@ public class DaoUsuario {
 		return lista;
 	}
 
-	public void delete(String login) {
+	public void delete(Integer id) {
 
 		try {
-			String sql = "delete from usuario where login = ?";
+			String sql = "delete from usuario where id = ?";
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setString(1, login);
+			ps.setInt(1, id);
 			ps.execute();
 
 			connection.commit();
@@ -73,8 +75,8 @@ public class DaoUsuario {
 		}
 	}
 
-	public BeanCursoJsp consultar(String login) throws SQLException{
-		String sql = "select * from usuario where login = '" + login + "'";
+	public BeanCursoJsp consultar(String id) throws SQLException{
+		String sql = "select * from usuario where id = '" + id + "'";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -84,6 +86,7 @@ public class DaoUsuario {
 			usuario.setId(rs.getLong("id"));
 			usuario.setLogin(rs.getString("login"));
 			usuario.setSenha(rs.getString("senha"));
+			usuario.setNome(rs.getString("nome"));
 
 			return usuario;
 		}
@@ -92,12 +95,13 @@ public class DaoUsuario {
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "update usuario set login=?, senha=? where id=?";
+			String sql = "update usuario set login=?, senha=?, nome=? where id=?";
 
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, usuario.getLogin());
 			ps.setString(2, usuario.getSenha());
-			ps.setLong(3, usuario.getId());
+			ps.setString(3, usuario.getNome());
+			ps.setLong(4, usuario.getId());
 
 			ps.executeUpdate();
 			connection.commit();
