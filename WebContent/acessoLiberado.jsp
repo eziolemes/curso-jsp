@@ -9,6 +9,6 @@
 <body>
 	<h3>Acesso liberado ao sistema</h3>
 	
-	<a href="salvarUsuario?acao=listartodos">Cadastro de Usuários</a>
+	<a href="salvarUsuario?acao=listartodos"><img src="resources/img/usuario.png" alt="cadastro_usuario" title="Cadastro de Usuários" width="5%"></a>
 </body>
 </html>

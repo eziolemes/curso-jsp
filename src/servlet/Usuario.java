@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import beans.BeanCursoJsp;
+import dao.DaoLogin;
 import dao.DaoUsuario;
 
 @WebServlet("/salvarUsuario")
@@ -66,6 +67,7 @@ public class Usuario extends HttpServlet {
 			String login = request.getParameter("login");
 			String senha = request.getParameter("senha");
 			String nome = request.getParameter("nome");
+			String fone = request.getParameter("fone");
 
 			BeanCursoJsp usuario = new BeanCursoJsp();
 
@@ -73,14 +75,20 @@ public class Usuario extends HttpServlet {
 			usuario.setLogin(login);
 			usuario.setSenha(senha);
 			usuario.setNome(nome);
-
-			if(id == null || id.isEmpty()) {
-				daoUsuario.salvar(usuario);
-			} else {
-				daoUsuario.atualizar(usuario);
-			}
+			usuario.setFone(fone);
 
 			try {
+				
+				if(id == null || id.isEmpty() && !daoUsuario.validarLogin(login)) {
+					request.setAttribute("msg", "Usuário já existe com o mesmo login!");
+				}
+
+				if(id == null || id.isEmpty() && daoUsuario.validarLogin(login)) {
+					daoUsuario.salvar(usuario);
+				} else if(id != null && !id.isEmpty()) {
+					daoUsuario.atualizar(usuario);
+				}
+
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listar());
 				view.forward(request, response);

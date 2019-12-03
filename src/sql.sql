@@ -40,4 +40,7 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE public.usuario
-  OWNER TO postgres;       
+  OWNER TO postgres;    
+  
+  
+  ALTER TABLE usuario ADD COLUMN fone character varying(50);
