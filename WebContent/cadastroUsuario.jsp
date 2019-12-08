@@ -13,7 +13,7 @@
 		<h1>Cadastro de usuários</h1>
 		<h3 style="color: orange;">${msg}</h3>
 	</center>
-	<form action="salvarUsuario" method="post" id="formUser">
+	<form action="salvarUsuario" method="post" id="formUser" onsubmit="return validarCampos() ? true : false;">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -44,9 +44,9 @@
 					</tr>
 					<tr>
 						<td></td>
-						<td>
-							<input type="submit" value="Salvar">
-							<input type="submit" value="Cancelar" onclick="documento.getElementById('formUser').action = 'salvarUsuario?acao=reset'">
+						<td><input type="submit" value="Salvar"> <input
+							type="submit" value="Cancelar"
+							onclick="documento.getElementById('formUser').action = 'salvarUsuario?acao=reset'">
 						</td>
 					</tr>
 				</table>
@@ -71,11 +71,36 @@
 					<td style="width: 150px"><c:out value="${user.login}"></c:out></td>
 					<td><c:out value="${user.nome}"></c:out></td>
 					<td><c:out value="${user.fone}"></c:out></td>
-					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/excluir.png" alt="excluir" title="Excluir" width="20px" height="20px"></a></td>
-					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="editar" title="Editar" width="20px" height="20px"></a></td>
+					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img
+							src="resources/img/excluir.png" alt="excluir" title="Excluir"
+							width="20px" height="20px"></a></td>
+					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img
+							src="resources/img/editar.png" alt="editar" title="Editar"
+							width="20px" height="20px"></a></td>
 				</tr>
 			</c:forEach>
 		</table>
 	</div>
+	<script type="text/javascript">
+		function validarCampos() {
+
+			if (document.getElementById("login").value == '') {
+				alert('Informe o Login');
+				return false;
+			} else if (document.getElementById("senha").value == '') {
+				alert('Informe o Senha');
+				return false;
+			} else if (document.getElementById("nome").value == '') {
+				alert('Informe o Nome');
+				return false;
+			} else if (document.getElementById("fone").value == '') {
+				alert('Informe o Fone');
+				return false;
+			}
+			
+			return true;
+
+		}
+	</script>
 </body>
 </html>

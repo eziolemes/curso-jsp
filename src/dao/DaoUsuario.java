@@ -107,6 +107,18 @@ public class DaoUsuario {
 		}
 		return false;
 	}
+	
+	public boolean validarLoginUpdate(String login, String id) throws SQLException{
+		String sql = "select count(1) as qtd from usuario where login = '" + login + "' and id <> " + id;
+
+		PreparedStatement ps = connection.prepareStatement(sql);
+		ResultSet rs = ps.executeQuery();
+
+		if(rs.next()) {
+			return rs.getInt("qtd") <= 0;
+		}
+		return false;
+	}
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
@@ -129,5 +141,17 @@ public class DaoUsuario {
 				e1.printStackTrace();
 			}
 		}
+	}
+	
+	public boolean validarSenha(String senha) throws Exception {
+		String sql = "select count(1) as qtd from usuario where senha='" + senha + "'";
+
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+		ResultSet resultSet = preparedStatement.executeQuery();
+		if (resultSet.next()) {
+			
+			return resultSet.getInt("qtd") <= 0;/*Return true*/
+		}
+		return false;
 	}
 }
