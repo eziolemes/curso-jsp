@@ -9,12 +9,15 @@
 <link rel="stylesheet" href="resources/css/cadastro.css">
 </head>
 <body>
+	<a href="acessoLiberado.jsp">Início</a>
+	<a href="idex.jsp">Sair</a>
 	<center>
 		<h1>Cadastro de Produto</h1>
-	<h3 style="color: orange;">${msg}</h3>
+		<h3 style="color: orange;">${msg}</h3>
 	</center>
-	
-	<form action="salvarProduto" method="post" id="formProduto">
+
+	<form action="salvarProduto" method="post" id="formProduto"
+		onsubmit="return validarCampos() ? true : false;">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -40,7 +43,9 @@
 							value="${produto.valor}"></td>
 					<tr>
 						<td></td>
-						<td><input type="submit" value="Salvar"> <input type="submit"  value="Cancelar" onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>
+						<td><input type="submit" value="Salvar"> <input
+							type="submit" value="Cancelar"
+							onclick="document.getElementById('formProduto').action = 'salvarProduto?acao=reset'"></td>
 					</tr>
 				</table>
 
@@ -78,6 +83,20 @@
 			</c:forEach>
 		</table>
 	</div>
-
+	<script type="text/javascript">
+		function validarCampos() {
+			if (document.getElementById("nome").value == '') {
+				alert('Informe o Nome');
+				return false;
+			} else if (document.getElementById("quantidade").value == '') {
+				alert('Informe o Quantidade');
+				return false;
+			} else if (document.getElementById("valor").value == '') {
+				alert('Informe o Valor R$');
+				return false;
+			}
+			return true;
+		}
+	</script>
 </body>
 </html>

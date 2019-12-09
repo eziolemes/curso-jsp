@@ -69,3 +69,10 @@ WITH (
 );
 ALTER TABLE produto
   OWNER TO postgres;  
+  
+ALTER TABLE usuario ADD COLUMN cep character varying(200);
+ALTER TABLE usuario ADD COLUMN rua character varying(200);
+ALTER TABLE usuario ADD COLUMN bairro character varying(200);
+ALTER TABLE usuario ADD COLUMN cidade character varying(200);
+ALTER TABLE usuario ADD COLUMN estado character varying(200);
+ALTER TABLE usuario ADD COLUMN ibge character varying(200);

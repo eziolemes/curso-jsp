@@ -68,6 +68,12 @@ public class Usuario extends HttpServlet {
 			String senha = request.getParameter("senha");
 			String nome = request.getParameter("nome");
 			String fone = request.getParameter("fone");
+			String cep = request.getParameter("cep");
+			String rua = request.getParameter("rua");
+			String bairro = request.getParameter("bairro");
+			String cidade = request.getParameter("cidade");
+			String estado = request.getParameter("estado");
+			String ibge = request.getParameter("ibge");
 
 			BeanCursoJsp usuario = new BeanCursoJsp();
 
@@ -76,6 +82,12 @@ public class Usuario extends HttpServlet {
 			usuario.setSenha(senha);
 			usuario.setNome(nome);
 			usuario.setFone(fone);
+			usuario.setCep(cep);
+			usuario.setRua(rua);
+			usuario.setBairro(bairro);
+			usuario.setCidade(cidade);
+			usuario.setEstado(estado);
+			usuario.setIbge(ibge);
 
 			try {
 				
@@ -94,11 +106,11 @@ public class Usuario extends HttpServlet {
 				} else if (fone == null || fone.isEmpty()) {
 					msg = "Fone deve ser informada";
 					podeInserir = false;
-				} else if (id == null || id.isEmpty() && !daoUsuario.validarLogin(login)) {//QUANDO DOR USUÁRIO NOVO
-					msg = "Usuário já existe com o mesmo login!";
+				} else if (id == null || id.isEmpty() && !daoUsuario.validarLogin(login)) {//QUANDO DOR USUÃ�RIO NOVO
+					msg = "UsuÃ¡rio jÃ¡ existe com o mesmo login!";
 					podeInserir = false;
-				} else if (id == null || id.isEmpty() && !daoUsuario.validarSenha(senha)) {// QUANDO FOR USUÁRIO NOVO
-					msg = "\n A senha já existe para outro usuário!";
+				} else if (id == null || id.isEmpty() && !daoUsuario.validarSenha(senha)) {// QUANDO FOR USUÃ�RIO NOVO
+					msg = "\n A senha jÃ¡ existe para outro usuÃ¡rio!";
 					podeInserir = false;
 				}
 
@@ -118,6 +130,7 @@ public class Usuario extends HttpServlet {
 
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listar());
+				request.setAttribute("msg", "Salvo com sucesso!");
 				view.forward(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
