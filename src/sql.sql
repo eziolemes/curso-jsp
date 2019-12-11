@@ -104,3 +104,6 @@ WITH (
 );
 ALTER TABLE telefone
   OWNER TO postgres;
+  
+ALTER TABLE usuario ADD COLUMN fotobase64 text;  
+ALTER TABLE usuario ADD COLUMN contenttype text;

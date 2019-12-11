@@ -22,7 +22,7 @@
 		<h3 style="color: orange;">${msg}</h3>
 	</center>
 	<form action="salvarUsuario" method="post" id="formUser"
-		onsubmit="return validarCampos() ? true : false;">
+		onsubmit="return validarCampos() ? true : false;" enctype="multipart/form-data">
 		<ul class="form-style-1">
 			<li>
 				<table>
@@ -70,6 +70,10 @@
 					<tr>
 						<td>IBGE:</td>
 						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" class="field-long" placeholder="Informe o IBGE da cidade"></td>
+					</tr>
+					<tr>
+						<td>Foto:</td>
+						<td><input type="file" name="foto" value="Foto"></td>
 					</tr>
 					<tr>
 						<td></td>
