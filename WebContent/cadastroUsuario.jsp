@@ -33,7 +33,7 @@
 						
 						<td>Cep:</td>
 						<td><input type="text" id="cep" name="cep" value="${user.cep}" class="field-long"
-							onblur="consultaCep();"></td>
+							onblur="consultaCep();" placeholder="Informe um cep válido"></td>
 					</tr>
 					<tr>
 						<td>Login:</td>
@@ -41,12 +41,12 @@
 							value="${user.login}" class="field-long"></td>
 							
 						<td>Rua:</td>
-						<td><input type="text" id="rua" name="rua" value="${user.cep}" class="field-long"></td>
+						<td><input type="text" id="rua" name="rua" value="${user.cep}" class="field-long" placeholder="Informe o endereço"></td>
 					</tr>
 					<tr>
 						<td>Senha:</td>
 						<td><input type="password" id="senha" name="senha"
-							value="${user.senha}" class="field-long"></td>
+							value="${user.senha}" class="field-long" placeholder="informe a senha"></td>
 							
 						<td>Bairro:</td>
 						<td><input type="text" id="bairro" name="bairro" value="${user.bairro}" class="field-long"></td>
@@ -54,22 +54,22 @@
 					<tr>
 						<td>Nome:</td>
 						<td><input type="text" id="nome" name="nome"
-							value="${user.nome}" class="field-long"></td>
+							value="${user.nome}" class="field-long" placeholder="Informe o nome do usuário"></td>
 							
 						<td>Cidade:</td>
-						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" class="field-long"></td>
+						<td><input type="text" id="cidade" name="cidade" value="${user.cidade}" class="field-long" placeholder="Informe a cidade do usuário"></td>
 					</tr>
 					<tr>
 						<td>Fone:</td>
 						<td><input type="text" id="fone" name="fone"
-							value="${user.fone}" class="field-long"></td>
+							value="${user.fone}" class="field-long" placeholder="Informe o número do fone"></td>
 							
 						<td>Estado:</td>
-						<td><input type="text" id="estado" name="estado" value="${user.estado}" class="field-long"></td>
+						<td><input type="text" id="estado" name="estado" value="${user.estado}" class="field-long" placeholder="Informe o estado do usuário"></td>
 					</tr>
 					<tr>
 						<td>IBGE:</td>
-						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" class="field-long"></td>
+						<td><input type="text" id="ibge" name="ibge" value="${user.ibge}" class="field-long" placeholder="Informe o IBGE da cidade"></td>
 					</tr>
 					<tr>
 						<td></td>
@@ -108,7 +108,7 @@
 							src="resources/img/editar.png" alt="editar" title="Editar"
 							width="20px" height="20px"></a></td>
 							
-					<td><a href="salvarTelefones?user=${user.id}"><img
+					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img
 							src="resources/img/phone.png" alt="Telefones" title="Telefones"
 							width="20px" height="20px"></a></td>
 				</tr>
