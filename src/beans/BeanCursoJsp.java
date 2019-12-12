@@ -14,7 +14,9 @@ public class BeanCursoJsp {
 	private String estado;
 	private String ibge;
 	private String fotoBase64;
+	private String curriculoBase64;
 	private String contentType;
+	private String contentTypeCurriculo;
 	
 	private String tempFotoUser;
 	
@@ -23,6 +25,22 @@ public class BeanCursoJsp {
 		return tempFotoUser;
 	}
 	
+	public String getCurriculoBase64() {
+		return curriculoBase64;
+	}
+
+	public void setCurriculoBase64(String curriculoBase64) {
+		this.curriculoBase64 = curriculoBase64;
+	}
+
+	public String getContentTypeCurriculo() {
+		return contentTypeCurriculo;
+	}
+
+	public void setContentTypeCurriculo(String contentTypeCurriculo) {
+		this.contentTypeCurriculo = contentTypeCurriculo;
+	}
+
 	public void setFotoBase64(String fotoBase64) {
 		this.fotoBase64 = fotoBase64;
 	}

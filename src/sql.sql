@@ -107,3 +107,10 @@ ALTER TABLE telefone
   
 ALTER TABLE usuario ADD COLUMN fotobase64 text;  
 ALTER TABLE usuario ADD COLUMN contenttype text;
+
+----------------------------------------------------
+ALTER TABLE produto ADD COLUMN quantidade numeric(10,4);
+
+ALTER TABLE usuario ADD COLUMN curriculoBase64 text;
+
+ALTER TABLE usuario ADD COLUMN contentTypeCurriculo text;

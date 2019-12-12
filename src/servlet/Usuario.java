@@ -1,7 +1,9 @@
 package servlet;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -53,7 +55,35 @@ public class Usuario extends HttpServlet {
 			} else if(acao.equalsIgnoreCase("download")) {
 				BeanCursoJsp usuario = daoUsuario.consultar(user);
 				if(usuario != null) {
-					response.setHeader("Content-Disposition", "attachament;arquivo." + usuario.getContentType().split("\\/")[1]);
+					String contentType = "";
+					byte[] fileBytes = null;
+					String tipo = request.getParameter("tipo");
+					
+					if(tipo.equalsIgnoreCase("imagem")) {
+						contentType = usuario.getContentType();
+						fileBytes = new Base64().decodeBase64(usuario.getFotoBase64());
+					} else if(tipo.equalsIgnoreCase("curriculo")) {
+						contentType = usuario.getContentTypeCurriculo();
+						fileBytes = new Base64().decodeBase64(usuario.getCurriculoBase64());
+					}
+					
+					response.setHeader("Content-Disposition", "attachment;filename=arquivo." + contentType.split("\\/")[1]);
+
+					/*Coloca os bytes de um objeto de entrada para processar*/
+					InputStream is = new ByteArrayInputStream(fileBytes);
+
+					/*Inicio da resposta para o navegador*/
+					int read= 0;
+					byte[] bytes = new byte[1024];
+					OutputStream os = response.getOutputStream();
+
+					while((read = is.read(bytes)) != -1) {
+						os.write(bytes, 0, read);
+					}
+
+					os.flush();
+					os.close();
+
 				}
 			}
 
@@ -103,25 +133,43 @@ public class Usuario extends HttpServlet {
 			usuario.setIbge(ibge);
 
 			try {
-				
+
 				/*Inicio File upload de imagens e pdf */
-				
+
 				if(ServletFileUpload.isMultipartContent(request)) {
-					
+
 					Part imagemFoto = request.getPart("foto");
+
+					if(imagemFoto != null && imagemFoto.getInputStream().available() > 0) {
+
+						String fotoBase64 = new Base64().encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
+
+						usuario.setFotoBase64(fotoBase64);
+						usuario.setContentType(imagemFoto.getContentType());
+					} else {
+						usuario.setFotoBase64( request.getParameter("fotoTemp") );
+						usuario.setContentType( request.getParameter("contentTypeTemp"));
+					}
 					
-					String fotoBase64 = new Base64().encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
+					/*Processa pdf*/
+					Part curriculoPdf = request.getPart("curriculo");
 					
-					usuario.setFotoBase64(fotoBase64);
-					usuario.setContentType(imagemFoto.getContentType());
-					
+					if(curriculoPdf != null && curriculoPdf.getInputStream().available() > 0) {
+						String curriculoBase64 = new Base64().encodeBase64String(converteStreamParaByte(curriculoPdf.getInputStream()));
+						
+						usuario.setCurriculoBase64(curriculoBase64);
+						usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
+					} else {
+						usuario.setCurriculoBase64(request.getParameter("fotoTempPDF"));
+						usuario.setContentTypeCurriculo(request.getParameter("contentTypeTempPDF"));
+					}
 				}
-				
+
 				/*Fim File iploa de imagens e pdf */
-				
+
 				String msg = null;
 				boolean podeInserir = true;
-				
+
 				if (login == null || login.isEmpty()) {
 					msg = "Login deve ser informado";
 					podeInserir = false;
@@ -151,7 +199,7 @@ public class Usuario extends HttpServlet {
 				} else if (id != null && !id.isEmpty() && podeInserir) {
 					daoUsuario.atualizar(usuario);
 				}
-				
+
 				if (!podeInserir) {
 					request.setAttribute("user", usuario);
 				}
@@ -166,7 +214,7 @@ public class Usuario extends HttpServlet {
 
 		}
 	}
-	
+
 	/* Converte a entrada de fluxo de dados da imagem para um array de bytes */
 	private byte[] converteStreamParaByte(InputStream imagem) throws Exception{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -175,7 +223,7 @@ public class Usuario extends HttpServlet {
 			baos.write(reads);
 			reads = imagem.read();
 		}
-		
+
 		return baos.toByteArray();
 	}
 

@@ -29,7 +29,7 @@
 					<tr>
 						<td>Código:</td>
 						<td><input type="text" readonly id="id" name="id"
-							value="${user.id}" class="field-long"></td>
+							value="${user.id}" class="field-long" placeholder="Automático"></td>
 						
 						<td>Cep:</td>
 						<td><input type="text" id="cep" name="cep" value="${user.cep}" class="field-long"
@@ -38,7 +38,7 @@
 					<tr>
 						<td>Login:</td>
 						<td><input type="text" id="login" name="login"
-							value="${user.login}" class="field-long"></td>
+							value="${user.login}" class="field-long" placeholder="Informe o login"></td>
 							
 						<td>Rua:</td>
 						<td><input type="text" id="rua" name="rua" value="${user.cep}" class="field-long" placeholder="Informe o endereço"></td>
@@ -49,7 +49,7 @@
 							value="${user.senha}" class="field-long" placeholder="informe a senha"></td>
 							
 						<td>Bairro:</td>
-						<td><input type="text" id="bairro" name="bairro" value="${user.bairro}" class="field-long"></td>
+						<td><input type="text" id="bairro" name="bairro" value="${user.bairro}" class="field-long" placeholder="Informe o bairro"></td>
 					</tr>
 					<tr>
 						<td>Nome:</td>
@@ -73,7 +73,19 @@
 					</tr>
 					<tr>
 						<td>Foto:</td>
-						<td><input type="file" name="foto" value="Foto"></td>
+						<td>
+							<input type="file" name="foto">
+							<input type="text" style="display: none;" name="fotoTemp" readonly value="${user.fotoBase64}">
+							<input type="text" style="display: none;" name="contentTypeTemp" readonly value="${user.contentType}">
+						</td>
+					</tr>
+					<tr>
+						<td>Currículo:</td>
+						<td>
+							<input type="file" name="curriculo" >
+							<input type="text" style="display: none;" name="fotoTempPDF" readonly value="${user.curriculoBase64}">
+							<input type="text" style="display: none;" name="contentTypeTempPDF" readonly value="${user.contentTypeCurriculo}">
+						</td>
 					</tr>
 					<tr>
 						<td></td>
@@ -93,6 +105,7 @@
 			<tr>
 				<th>Id</th>
 				<th>Foto</th>
+				<th>Currículo</th>
 				<th>Nome</th>
 				<th>Delete</th>
 				<th>Update</th>
@@ -101,7 +114,21 @@
 			<c:forEach items="${usuarios}" var="user">
 				<tr>
 					<td><c:out value="${user.id}"></c:out></td>
-					<td><a href="salvarUsuario?acao=download&user=${user.id}"><img src="<c:out value="${user.tempFotoUser}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
+					
+					<c:if test="${user.fotoBase64.isEmpty() == false}">
+						<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${user.id}"><img src="<c:out value="${user.tempFotoUser}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
+					</c:if>
+					<c:if test="${user.fotoBase64.isEmpty() == true}">
+						<td><img alt="Imagem User" title="Imagem User" src="resources/img/userpadrao.png" width="32px" height="32px" onclick="alert('Não possui imagem')"></td>
+					</c:if>
+					
+					<c:if test="${user.curriculoBase64.isEmpty() == false}">
+						<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${user.id}"><img alt="Curriculo" src="resources/img/pdf.png" width="20px" height="20px"></a></td>
+					</c:if>
+					<c:if test="${user.curriculoBase64.isEmpty() == true}">
+						<td><img alt="Curriculo" src="resources/img/pdf.png" width="20px" height="20px" onclick="alert('Não possui currículo')"></td>
+					</c:if>
+					
 					<td><c:out value="${user.nome}"></c:out></td>
 					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/excluir.png" alt="excluir" title="Excluir" width="20px" height="20px"></a></td>
 					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="editar" title="Editar" width="20px" height="20px"></a></td>
