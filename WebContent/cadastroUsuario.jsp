@@ -92,29 +92,20 @@
 			<caption>Usuários cadastrados</caption>
 			<tr>
 				<th>Id</th>
-				<th>Login</th>
+				<th>Foto</th>
 				<th>Nome</th>
-				<th>Fone</th>
-				<th>Apagar</th>
-				<th>Editar</th>
+				<th>Delete</th>
+				<th>Update</th>
 				<th>Fones</th>
 			</tr>
 			<c:forEach items="${usuarios}" var="user">
 				<tr>
-					<td style="width: 150px"><c:out value="${user.id}"></c:out></td>
-					<td style="width: 150px"><c:out value="${user.login}"></c:out></td>
+					<td><c:out value="${user.id}"></c:out></td>
+					<td><a href="salvarUsuario?acao=download&user=${user.id}"><img src="<c:out value="${user.tempFotoUser}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
 					<td><c:out value="${user.nome}"></c:out></td>
-					<td><c:out value="${user.fone}"></c:out></td>
-					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img
-							src="resources/img/excluir.png" alt="excluir" title="Excluir"
-							width="20px" height="20px"></a></td>
-					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img
-							src="resources/img/editar.png" alt="editar" title="Editar"
-							width="20px" height="20px"></a></td>
-							
-					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img
-							src="resources/img/phone.png" alt="Telefones" title="Telefones"
-							width="20px" height="20px"></a></td>
+					<td><a href="salvarUsuario?acao=delete&user=${user.id}"><img src="resources/img/excluir.png" alt="excluir" title="Excluir" width="20px" height="20px"></a></td>
+					<td><a href="salvarUsuario?acao=editar&user=${user.id}"><img src="resources/img/editar.png" alt="editar" title="Editar" width="20px" height="20px"></a></td>
+					<td><a href="salvarTelefones?acao=addFone&user=${user.id}"><img src="resources/img/phone.png" alt="Telefones" title="Telefones" width="20px" height="20px"></a></td>
 				</tr>
 			</c:forEach>
 		</table>

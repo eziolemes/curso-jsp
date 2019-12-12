@@ -50,6 +50,11 @@ public class Usuario extends HttpServlet {
 				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
 				request.setAttribute("usuarios", daoUsuario.listar());
 				view.forward(request, response);
+			} else if(acao.equalsIgnoreCase("download")) {
+				BeanCursoJsp usuario = daoUsuario.consultar(user);
+				if(usuario != null) {
+					response.setHeader("Content-Disposition", "attachament;arquivo." + usuario.getContentType().split("\\/")[1]);
+				}
 			}
 
 		}catch (Exception e) {
