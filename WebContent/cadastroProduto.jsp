@@ -1,11 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Cadastro de Produto</title>
+
+<script src = "resources/javascript/jquery.min.js"  type = "text/javascript" ></script>
+<script src = "resources/javascript/jquery.maskMoney.min.js"  type = "text/javascript" ></script>
+
 <link rel="stylesheet" href="resources/css/cadastro.css">
 </head>
 <body>
@@ -34,13 +40,13 @@
 
 					<tr>
 						<td>Quantidade:</td>
-						<td><input type="text" id="quantidade" name="quantidade"
+						<td><input type="number" id="quantidade" name="quantidade"
 							value="${produto.quantidade}"></td>
 					</tr>
 					<tr>
 						<td>Valor R$:</td>
 						<td><input type="text" id="valor" name="valor"
-							value="${produto.valor}"></td>
+							value="${produto.valorEmTexto}" data-thousands="." data-decimal=","></td>
 					<tr>
 						<td></td>
 						<td><input type="submit" value="Salvar"> <input
@@ -71,7 +77,7 @@
 					<td style="width: 150px"><c:out value="${produto.nome}">
 						</c:out></td>
 					<td><c:out value="${produto.quantidade}"></c:out></td>
-					<td><c:out value="${produto.valor}"></c:out></td>
+					<td><fmt:formatNumber type="number" maxFractionDigits="2" value="${produto.valor}"/></td>
 
 					<td><a href="salvarProduto?acao=delete&produto=${produto.id}"><img
 							src="resources/img/excluir.png" alt="excluir" title="Excluir"
@@ -99,4 +105,12 @@
 		}
 	</script>
 </body>
+
+<script type="text/javascript">
+$(function() {
+	$('#valor').maskMoney();
+})
+
+</script>
+
 </html>

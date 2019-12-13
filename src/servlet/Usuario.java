@@ -1,10 +1,13 @@
 package servlet;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -155,17 +158,39 @@ public class Usuario extends HttpServlet {
 					Part curriculoPdf = request.getPart("curriculo");
 					
 					if(curriculoPdf != null && curriculoPdf.getInputStream().available() > 0) {
-						String curriculoBase64 = new Base64().encodeBase64String(converteStreamParaByte(curriculoPdf.getInputStream()));
+						byte[] bytesImagem = converteStreamParaByte(curriculoPdf.getInputStream());
+						
+						String curriculoBase64 = new Base64().encodeBase64String(bytesImagem);
 						
 						usuario.setCurriculoBase64(curriculoBase64);
 						usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
+						
+						/*Início da miniatura da imagem*/
+						
+						/*Transformar em um BufferedImage*/
+						BufferedImage bufferedImage = ImageIO.read( new ByteArrayInputStream(bytesImagem) );
+						
+						/*Pega o tipo da imagem*/
+						int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
+						
+						/*Cria imagem em miniatura*/
+						BufferedImage resizedImagem = new BufferedImage(100, 100, type);
+						Graphics2D g = resizedImagem.createGraphics();
+						g.drawImage(resizedImagem, 0, 0, 100, 100, null);
+						
+						/*Escrever a imagem novamente*/
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						ImageIO.write(resizedImagem, "png", baos);
+						
+						String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+						/*Fim da miniatura da imagem*/
 					} else {
 						usuario.setCurriculoBase64(request.getParameter("fotoTempPDF"));
 						usuario.setContentTypeCurriculo(request.getParameter("contentTypeTempPDF"));
 					}
 				}
 
-				/*Fim File iploa de imagens e pdf */
+				/*Fim File upload de imagens e pdf */
 
 				String msg = null;
 				boolean podeInserir = true;

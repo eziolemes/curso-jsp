@@ -41,7 +41,7 @@ public class TelefonesServlet extends HttpServlet {
 				request.setAttribute("msg", "Salvo com sucesso!");
 				view.forward(request, response);
 			} else if(acao.equals("deleteFone")) {
-				String foneId = request.getParameter("foneId");
+				String foneId = request.getParameter("fone");
 				daoTelefones.delete(foneId);
 				
 				BeanCursoJsp usuario = (BeanCursoJsp) request.getSession().getAttribute("userEscolhido");

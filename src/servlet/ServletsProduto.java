@@ -38,14 +38,11 @@ public class ServletsProduto extends HttpServlet {
 
 				Produto beanCursoJsp = daoProduto.consultar(produto);
 
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produto", beanCursoJsp);
 				view.forward(request, response);
 			} else if (acao.equalsIgnoreCase("listartodos")) {
-
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 			}
@@ -55,15 +52,13 @@ public class ServletsProduto extends HttpServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String acao = request.getParameter("acao");
 
 		if (acao != null && acao.equalsIgnoreCase("reset")) {
 			try {
-				RequestDispatcher view = request
-						.getRequestDispatcher("/cadastroProduto.jsp");
+				RequestDispatcher view = request.getRequestDispatcher("/cadastroProduto.jsp");
 				request.setAttribute("produtos", daoProduto.listar());
 				view.forward(request, response);
 
@@ -99,7 +94,7 @@ public class ServletsProduto extends HttpServlet {
 															// FDOR
 															// PRODUTO
 															// NOVO
-					msg = "Produto já existe com o mesmo nome!";
+					msg = "Produto jï¿½ existe com o mesmo nome!";
 					podeInserir = false;
 
 				}
@@ -109,12 +104,17 @@ public class ServletsProduto extends HttpServlet {
 				produto.setId(!id.isEmpty() ? Long.parseLong(id) : null);
 
 				if (quantidade != null && !quantidade.isEmpty()) {
+					
+					
 					produto.setQuantidade(Double.parseDouble(quantidade));
 				}
 
-				if (valor != null && !valor.isEmpty())
-					produto.setValor(Double.parseDouble(valor));
-
+				if (valor != null && !valor.isEmpty()) {
+					String valorProduto = valor.replaceAll("\\.", "");
+					valorProduto = valorProduto.replaceAll("\\,", ".");
+					
+					produto.setValor(Double.parseDouble(valorProduto));
+				}
 				if (msg != null) {
 					request.setAttribute("msg", msg);
 				} else if (id == null || id.isEmpty()
