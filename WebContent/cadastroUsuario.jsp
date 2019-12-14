@@ -115,10 +115,10 @@
 				<tr>
 					<td><c:out value="${user.id}"></c:out></td>
 					
-					<c:if test="${user.fotoBase64.isEmpty() == false}">
-						<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${user.id}"><img src="<c:out value="${user.tempFotoUser}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
+					<c:if test="${user.fotoBase64Miniatura.isEmpty() == false}">
+						<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${user.id}"><img src="<c:out value="${user.fotoBase64Miniatura}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
 					</c:if>
-					<c:if test="${user.fotoBase64.isEmpty() == true}">
+					<c:if test="${user.fotoBase64Miniatura.isEmpty() == true}">
 						<td><img alt="Imagem User" title="Imagem User" src="resources/img/userpadrao.png" width="32px" height="32px" onclick="alert('Não possui imagem')"></td>
 					</c:if>
 					

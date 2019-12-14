@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.xml.bind.DatatypeConverter;
 
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -135,108 +136,115 @@ public class Usuario extends HttpServlet {
 			usuario.setEstado(estado);
 			usuario.setIbge(ibge);
 
-			try {
-
-				/*Inicio File upload de imagens e pdf */
-
-				if(ServletFileUpload.isMultipartContent(request)) {
+			try {	
+				
+				/*Inicio File upload de imagems e pdf*/
+				
+				if (ServletFileUpload.isMultipartContent(request)){
 
 					Part imagemFoto = request.getPart("foto");
-
-					if(imagemFoto != null && imagemFoto.getInputStream().available() > 0) {
-
-						String fotoBase64 = new Base64().encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
-
+					
+					
+					if (imagemFoto != null && imagemFoto.getInputStream().available() > 0) {
+						
+						String fotoBase64 = new Base64()
+						.encodeBase64String(converteStreamParaByte(imagemFoto.getInputStream()));
+						
 						usuario.setFotoBase64(fotoBase64);
 						usuario.setContentType(imagemFoto.getContentType());
-					} else {
-						usuario.setFotoBase64( request.getParameter("fotoTemp") );
-						usuario.setContentType( request.getParameter("contentTypeTemp"));
+						
+						/*Inicio miniatura imagem*/
+						 
+						/*Transforma emum bufferedImage*/
+						 byte[] imageByteDecode = new Base64().decodeBase64(fotoBase64);
+						 BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imageByteDecode));
+						 
+						 /*Pega o tipo da imagem*/
+						 int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB: bufferedImage.getType();
+						 
+						 /*Cria imagem em miniatura*/
+						  BufferedImage resizedImage = new BufferedImage(100, 100, type);
+						  Graphics2D g = resizedImage.createGraphics();
+						  g.drawImage(bufferedImage, 0, 0, 100, 100, null);
+						  g.dispose();
+						  
+						  /*Escrever imagem novamente*/
+						  ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						  ImageIO.write(resizedImage, "png", baos);
+						  
+						  
+						  String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
+						
+						  usuario.setFotoBase64Miniatura(miniaturaBase64);
+						/*Fim miniatura imagem*/
+						
+					}else {
+						usuario.setFotoBase64(request.getParameter("fotoTemp"));
+						usuario.setContentType(request.getParameter("contetTypeTemp"));
 					}
 					
 					/*Processa pdf*/
 					Part curriculoPdf = request.getPart("curriculo");
-					
-					if(curriculoPdf != null && curriculoPdf.getInputStream().available() > 0) {
-						byte[] bytesImagem = converteStreamParaByte(curriculoPdf.getInputStream());
+						if (curriculoPdf != null && curriculoPdf.getInputStream().available() > 0){
 						
-						String curriculoBase64 = new Base64().encodeBase64String(bytesImagem);
+						String curriculoBase64 = new Base64()
+						.encodeBase64String(converteStreamParaByte(curriculoPdf.getInputStream()));
 						
 						usuario.setCurriculoBase64(curriculoBase64);
 						usuario.setContentTypeCurriculo(curriculoPdf.getContentType());
-						
-						/*Início da miniatura da imagem*/
-						
-						/*Transformar em um BufferedImage*/
-						BufferedImage bufferedImage = ImageIO.read( new ByteArrayInputStream(bytesImagem) );
-						
-						/*Pega o tipo da imagem*/
-						int type = bufferedImage.getType() == 0 ? BufferedImage.TYPE_INT_ARGB : bufferedImage.getType();
-						
-						/*Cria imagem em miniatura*/
-						BufferedImage resizedImagem = new BufferedImage(100, 100, type);
-						Graphics2D g = resizedImagem.createGraphics();
-						g.drawImage(resizedImagem, 0, 0, 100, 100, null);
-						
-						/*Escrever a imagem novamente*/
-						ByteArrayOutputStream baos = new ByteArrayOutputStream();
-						ImageIO.write(resizedImagem, "png", baos);
-						
-						String miniaturaBase64 = "data:image/png;base64," + DatatypeConverter.printBase64Binary(baos.toByteArray());
-						/*Fim da miniatura da imagem*/
-					} else {
+					}else {
 						usuario.setCurriculoBase64(request.getParameter("fotoTempPDF"));
-						usuario.setContentTypeCurriculo(request.getParameter("contentTypeTempPDF"));
+						usuario.setContentTypeCurriculo(request.getParameter("contetTypeTempPDF"));
 					}
 				}
-
-				/*Fim File upload de imagens e pdf */
-
-				String msg = null;
-				boolean podeInserir = true;
-
-				if (login == null || login.isEmpty()) {
-					msg = "Login deve ser informado";
-					podeInserir = false;
-				} else if (senha == null || senha.isEmpty()) {
-					msg = "Senha deve ser informada";
-					podeInserir = false;
-				} else if (nome == null || nome.isEmpty()) {
-					msg = "Nome deve ser informada";
-					podeInserir = false;
-				} else if (fone == null || fone.isEmpty()) {
-					msg = "Fone deve ser informada";
-					podeInserir = false;
-				} else if (id == null || id.isEmpty() && !daoUsuario.validarLogin(login)) {//QUANDO DOR USUÃ�RIO NOVO
-					msg = "UsuÃ¡rio jÃ¡ existe com o mesmo login!";
-					podeInserir = false;
-				} else if (id == null || id.isEmpty() && !daoUsuario.validarSenha(senha)) {// QUANDO FOR USUÃ�RIO NOVO
-					msg = "\n A senha jÃ¡ existe para outro usuÃ¡rio!";
-					podeInserir = false;
+				
+				/*FIM File upload de imagems e pdf*/
+				
+					String msg = null;
+					boolean podeInserir = true;
+					
+					if(login == null || login.isEmpty()) {
+						msg = "Login Deve Ser Informado!";
+						podeInserir = false;
+					} else if(senha == null || senha.isEmpty()) {
+						msg = "Senha Deve Ser Informada!";
+						podeInserir = false;
+					} else if(nome == null || nome.isEmpty()) {
+						msg = "Nome Deve Ser Informado!";
+						podeInserir = false;
+					} else if(id == null || id.isEmpty() && !daoUsuario.validarLogin(login)) {
+						request.setAttribute("msg", "Este Login Pertence a Um Usuário!");
+						podeInserir = false;
+					} else if(id == null || id.isEmpty() && !daoUsuario.validarSenha(senha)) {
+						request.setAttribute("msg", "Esta Senha Pertence a Um Usuário!");
+						podeInserir = false;
+					}
+					
+					if(msg != null) {
+						request.setAttribute("msg", msg);
+					} else if(id == null || id.isEmpty() && daoUsuario.validarLogin(login) && daoUsuario.validarSenha(senha) && podeInserir) {
+						daoUsuario.salvar(usuario);
+					}
+					
+					if(id != null && !id.isEmpty() && podeInserir) {
+						if (!daoUsuario.validarLoginUpdate(login, id)){
+							request.setAttribute("msg", "Login já existe para outro usuário");
+						}else {
+						 daoUsuario.atualizar(usuario);
+						}
+					}
+					
+					if(!podeInserir) {
+						request.setAttribute("user", usuario);
+					}
+					
+					RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
+					request.setAttribute("usuarios", daoUsuario.listar());
+					//request.setAttribute("msg", "Salvo Com Sucesso!");
+					view.forward(request, response);
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
-
-				if (msg != null) {
-					request.setAttribute("msg", msg);
-				} else if (id == null || id.isEmpty() && daoUsuario.validarLogin(login) && podeInserir) {
-
-					daoUsuario.salvar(usuario);
-
-				} else if (id != null && !id.isEmpty() && podeInserir) {
-					daoUsuario.atualizar(usuario);
-				}
-
-				if (!podeInserir) {
-					request.setAttribute("user", usuario);
-				}
-
-				RequestDispatcher view = request.getRequestDispatcher("/cadastroUsuario.jsp");
-				request.setAttribute("usuarios", daoUsuario.listar());
-				request.setAttribute("msg", "Salvo com sucesso!");
-				view.forward(request, response);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
 		}
 	}
 

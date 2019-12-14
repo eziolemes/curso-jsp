@@ -20,7 +20,7 @@ public class DaoUsuario {
 
 	public void salvar(BeanCursoJsp usuario) {
 		try {
-			String sql = "insert into usuario(login, senha, nome, fone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculoBase64, contentTypeCurriculo) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			String sql = "insert into usuario(login, senha, nome, fone, cep, rua, bairro, cidade, estado, ibge, fotobase64, contenttype, curriculoBase64, contentTypeCurriculo, fotoBase64Miniatura) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
 			PreparedStatement insert = connection.prepareStatement(sql);
 			insert.setString(1, usuario.getLogin());
@@ -37,6 +37,7 @@ public class DaoUsuario {
 			insert.setString(12, usuario.getContentType());
 			insert.setString(13, usuario.getCurriculoBase64());
 			insert.setString(14, usuario.getContentTypeCurriculo());
+			insert.setString(15, usuario.getFotoBase64Miniatura());
 			
 			insert.execute();
 			connection.commit();
@@ -51,7 +52,7 @@ public class DaoUsuario {
 
 	public List<BeanCursoJsp> listar() throws Exception {
 		List<BeanCursoJsp> lista = new ArrayList<BeanCursoJsp>();
-		String sql = "select * from usuario";
+		String sql = "select * from usuario where login <> 'admin'";
 		PreparedStatement ps = connection.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
 
@@ -68,7 +69,8 @@ public class DaoUsuario {
 			usuario.setCidade(rs.getString("cidade"));
 			usuario.setEstado(rs.getString("estado"));
 			usuario.setIbge(rs.getString("ibge"));
-			usuario.setFotoBase64(rs.getString("fotobase64"));
+//			usuario.setFotoBase64(rs.getString("fotobase64"));
+			usuario.setFotoBase64Miniatura(rs.getString("fotobase64miniatura"));
 			usuario.setContentType(rs.getString("contenttype"));
 			usuario.setCurriculoBase64(rs.getString("curriculobase64"));
 			usuario.setContentTypeCurriculo(rs.getString("contenttypecurriculo"));
@@ -82,7 +84,7 @@ public class DaoUsuario {
 	public void delete(Integer id) {
 
 		try {
-			String sql = "delete from usuario where id = ?";
+			String sql = "delete from usuario where id = ? and login <> 'admin'";
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			ps.execute();
@@ -99,7 +101,7 @@ public class DaoUsuario {
 	}
 
 	public BeanCursoJsp consultar(String id) throws SQLException{
-		String sql = "select * from usuario where id = '" + id + "'";
+		String sql = "select * from usuario where id = '" + id + "' and login <> 'admin'";
 
 		PreparedStatement ps = connection.prepareStatement(sql);
 		ResultSet rs = ps.executeQuery();
@@ -118,6 +120,7 @@ public class DaoUsuario {
 			usuario.setEstado(rs.getString("estado"));
 			usuario.setIbge(rs.getString("ibge"));
 			usuario.setFotoBase64(rs.getString("fotobase64"));
+			usuario.setFotoBase64Miniatura(rs.getString("fotobase64miniatura"));
 			usuario.setContentType(rs.getString("contenttype"));
 			usuario.setCurriculoBase64(rs.getString("curriculobase64"));
 			usuario.setContentTypeCurriculo(rs.getString("contenttypecurriculo"));
@@ -153,7 +156,7 @@ public class DaoUsuario {
 
 	public void atualizar(BeanCursoJsp usuario) {
 		try {
-			String sql = "update usuario set login=?, senha=?, nome=?, fone=?,cep=?,rua=?,bairro=?,cidade=?,estado=?,ibge=?,fotobase64=?,contenttype=?,curriculobase64=?,contenttypecurriculo=?  "
+			String sql = "update usuario set login=?, senha=?, nome=?, fone=?,cep=?,rua=?,bairro=?,cidade=?,estado=?,ibge=?,fotobase64=?,contenttype=?,curriculobase64=?,contenttypecurriculo=?,fotobase64miniatura=?  "
 					+ "where id=?";
 
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -171,7 +174,8 @@ public class DaoUsuario {
 			ps.setString(12, usuario.getContentType());
 			ps.setString(13, usuario.getCurriculoBase64());
 			ps.setString(14, usuario.getContentTypeCurriculo());
-			ps.setLong(15, usuario.getId());
+			ps.setString(15, usuario.getFotoBase64Miniatura());
+			ps.setLong(16, usuario.getId());
 
 			ps.executeUpdate();
 			connection.commit();

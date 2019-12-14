@@ -114,3 +114,5 @@ ALTER TABLE produto ADD COLUMN quantidade numeric(10,4);
 ALTER TABLE usuario ADD COLUMN curriculoBase64 text;
 
 ALTER TABLE usuario ADD COLUMN contentTypeCurriculo text;
+
+ALTER TABLE usuario ADD COLUMN fotoBase64Miniatura text;
