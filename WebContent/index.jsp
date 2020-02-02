@@ -18,6 +18,9 @@
 <body>
 
 	<div class="login-page">
+	<center><h3>Projeto Didático</h3></center><br />
+	<center><h1>JSP + Servlet + JSP</h1></center>
+	<center><span><b>USUÁRIO:</b> admin<br /><b>SENHA:</b> q</span></center><br />
 		<div class="form">
 			<form action="LoginServlet" method="post" class="login-form">
 				Login: <input type="text" id="login" name="login"> <br>
@@ -25,6 +28,7 @@
 				<button type="submit" value="Logar">Logar</button>
 			</form>
 		</div>
+		<center><h3>Formação Java Web</h3></center>
 	</div>
 
 

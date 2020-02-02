@@ -75,16 +75,12 @@
 						<td>Foto:</td>
 						<td>
 							<input type="file" name="foto">
-							<input type="text" style="display: none;" name="fotoTemp" readonly value="${user.fotoBase64}">
-							<input type="text" style="display: none;" name="contentTypeTemp" readonly value="${user.contentType}">
 						</td>
 					</tr>
 					<tr>
 						<td>Currículo:</td>
 						<td>
 							<input type="file" name="curriculo" >
-							<input type="text" style="display: none;" name="fotoTempPDF" readonly value="${user.curriculoBase64}">
-							<input type="text" style="display: none;" name="contentTypeTempPDF" readonly value="${user.contentTypeCurriculo}">
 						</td>
 					</tr>
 					<tr>
@@ -115,17 +111,17 @@
 				<tr>
 					<td><c:out value="${user.id}"></c:out></td>
 					
-					<c:if test="${user.fotoBase64Miniatura.isEmpty() == false}">
+					<c:if test="${user.fotoBase64Miniatura != null}">
 						<td><a href="salvarUsuario?acao=download&tipo=imagem&user=${user.id}"><img src="<c:out value="${user.fotoBase64Miniatura}"></c:out>" alt="Imagem User" title="Imagem User" width="32px" height="32px"></a></td>
 					</c:if>
-					<c:if test="${user.fotoBase64Miniatura.isEmpty() == true}">
+					<c:if test="${user.fotoBase64Miniatura == null}">
 						<td><img alt="Imagem User" title="Imagem User" src="resources/img/userpadrao.png" width="32px" height="32px" onclick="alert('Não possui imagem')"></td>
 					</c:if>
 					
-					<c:if test="${user.curriculoBase64.isEmpty() == false}">
+					<c:if test="${user.curriculoBase64 != null}">
 						<td><a href="salvarUsuario?acao=download&tipo=curriculo&user=${user.id}"><img alt="Curriculo" src="resources/img/pdf.png" width="20px" height="20px"></a></td>
 					</c:if>
-					<c:if test="${user.curriculoBase64.isEmpty() == true}">
+					<c:if test="${user.curriculoBase64 == null}">
 						<td><img alt="Curriculo" src="resources/img/pdf.png" width="20px" height="20px" onclick="alert('Não possui currículo')"></td>
 					</c:if>
 					
